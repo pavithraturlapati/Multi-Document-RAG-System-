@@ -1,10 +1,8 @@
-# 📚 Multi-Document RAG System for Math Textbooks
+📚 Multi-Document RAG System for Math Textbooks
 
 A **Retrieval-Augmented Generation (RAG)** system built with Python and LangChain. It reads a local folder of mathematical PDF textbooks — *Statistical Probability*, *Permutations & Combinations*, and *Linear Algebra* — and lets you ask interactive questions about the material using a fully local AI model.
 
----
-
-## 🏗️ Core Architecture
+🏗️ Core Architecture
 
 | Component | Technology |
 |---|---|
@@ -15,9 +13,7 @@ A **Retrieval-Augmented Generation (RAG)** system built with Python and LangChai
 | Vector Database | Chroma (persisted locally) |
 | LLM | Llama 3 (via Ollama, runs fully offline) |
 
----
-
-## ⚙️ How It Works
+⚙️ How It Works
 
 The system processes information in six logical steps:
 
@@ -35,7 +31,7 @@ The system processes information in six logical steps:
 
 ---
 
-## 📥 Input & Output
+📥 Input & Output
 
 **Input**
 - **Knowledge Base:** `.pdf` textbooks placed in an `Input/` folder
@@ -44,11 +40,9 @@ The system processes information in six logical steps:
 **Output**
 - A natural language response generated strictly from the content of your provided textbooks — no outside knowledge, no guessing.
 
----
+🛠️ Prerequisites
 
-## 🛠️ Prerequisites
-
-### 1. Install Python Packages
+1. Install Python Packages
 
 ```bash
 pip install langchain langchain-community langchain-huggingface langchain-chroma langchain-ollama pypdf
@@ -56,7 +50,7 @@ pip install langchain langchain-community langchain-huggingface langchain-chroma
 
 > Python **3.11** is recommended for best stability.
 
-### 2. Install Ollama & Download the Model
+2. Install Ollama & Download the Model
 
 1. Download and install [Ollama](https://ollama.com/)
 2. Pull the Llama 3 model:
@@ -67,9 +61,8 @@ ollama pull llama3
 
 > Ollama must be running in the background before you start the script.
 
----
 
-## 🚀 How to Use
+🚀 How to Use
 
 **Step 1 — Add your textbooks**
 
@@ -105,9 +98,7 @@ Once the database is ready, an interactive chat loop starts in your terminal:
 
 The system will pull the most relevant passages from your textbooks and generate a precise answer.
 
----
-
-## 📁 Project Structure
+📁 Project Structure
 
 ```
 project/
