@@ -85,7 +85,7 @@ Once the database is ready, an interactive chat loop starts in your terminal:
 
 > Explain the binomial theorem
 > What is the difference between permutation and combination?
-> How do you find the determinant of a 3x3 matrix?
+> What's Taylor's theorem? Can you explain with an example?
 
 The system will pull the most relevant passages from your textbooks and generate a precise answer.
 
