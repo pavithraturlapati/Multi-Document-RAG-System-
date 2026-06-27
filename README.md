@@ -135,17 +135,3 @@ project/
 ```
 
 ---
-
-## 🔮 Potential Enhancements
-
-- [ ] **Swap the LLM** — Plug in any Ollama-compatible model (Mistral, Gemma, Phi-3) for different speed/quality tradeoffs
-- [ ] **Increase retrieval depth** — Raise `k` beyond 3 for broader context on complex questions
-- [ ] **Add a web UI** — Wrap the terminal loop in a Streamlit or Gradio interface
-- [ ] **Source citations** — Surface the exact page and document each answer was pulled from
-- [ ] **Multi-modal support** — Extend to handle textbook diagrams and equations via vision models
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See `LICENSE` for details.
