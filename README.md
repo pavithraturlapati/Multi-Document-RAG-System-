@@ -1,80 +1,57 @@
 # 📚 Multi-Document RAG System for Math Textbooks
 
-A Retrieval-Augmented Generation (RAG) system built with Python and LangChain. Point it at a folder of mathematical PDF textbooks — *Statistical Probability*, *Permutations & Combinations*, *Linear Algebra* — and get precise, grounded answers without any cloud dependency or hallucinations.
+A Retrieval-Augmented Generation (RAG) system built with Python and LangChain. It reads a local folder of mathematical PDF textbooks — Statistical Probability, Permutations & Combinations, and Linear Algebra — and lets you ask interactive questions about the material using a fully local AI model.
 
 ---
 
-## ✨ Highlights
+## 🏗️ Core Architecture
 
-- 🔒 **100% Local & Private** — Llama 3 runs fully offline via Ollama; no data leaves your machine
-- 🧠 **Grounded Answers** — Responses are generated strictly from your textbooks, never from outside knowledge
-- ⚡ **Fast Retrieval** — Chroma vector database is built once and reused on every subsequent run
-- 📄 **Fault-Tolerant Loading** — Gracefully skips corrupt or non-PDF files without crashing
+| Component | Technology |
+|-----------|------------|
+| Orchestration | LangChain |
+| Document Loading | PyPDFLoader |
+| Text Splitting | RecursiveCharacterTextSplitter |
+| Embedding Model | `all-MiniLM-L6-v2` (lightweight, open-source, CPU-friendly) |
+| Vector Database | Chroma (persisted locally) |
+| LLM | Llama 3 (via Ollama, runs fully offline) |
 
 ---
 
-## 🏗️ Architecture & Workflow
+## ⚙️ How It Works
 
 The system processes information in six logical steps:
 
-```
-PDF Textbooks (Input/)
-        │
-        ▼
-  [1] Load        PyPDFLoader reads all valid .pdf files
-        │
-        ▼
-  [2] Chunk       RecursiveCharacterTextSplitter splits by paragraph → sentence
-        │         Sliding window preserves context across boundaries
-        ▼
-  [3] Embed       all-MiniLM-L6-v2 converts each chunk to a semantic vector
-        │
-        ▼
-  [4] Store       Chroma persists all vectors locally to ./chroma_db
-        │
-        ▼
-  [5] Retrieve    Top 3 most semantically relevant chunks (k=3) fetched per query
-        │
-        ▼
-  [6] Generate    Retrieved chunks injected into a strict prompt → Llama 3 responds
-```
-
-### Component Overview
-
-| Layer | Technology |
-|-------|------------|
-| Orchestration | LangChain |
-| Document Loading | `PyPDFLoader` |
-| Text Splitting | `RecursiveCharacterTextSplitter` |
-| Embedding Model | `all-MiniLM-L6-v2` — lightweight, open-source, CPU-friendly |
-| Vector Database | Chroma (persisted locally) |
-| LLM | Llama 3 via Ollama (fully offline) |
+1. **Load** — PyPDFLoader reads all valid `.pdf` files in the Input folder, gracefully skipping any corrupt or non-PDF files.
+2. **Chunk** — RecursiveCharacterTextSplitter breaks large textbook chapters into smaller pieces, splitting first by paragraph then by sentence so related content stays together. A sliding window (chunk overlap) preserves context across boundaries.
+3. **Embed** — Each chunk is converted into a numerical vector using the `all-MiniLM-L6-v2` model, capturing the semantic meaning of the text.
+4. **Store** — All vectors are saved into a local Chroma vector database (`./chroma_db`), built once and reused on subsequent runs.
+5. **Retrieve** — When you ask a question, the system searches the database and fetches the top 3 most semantically relevant text chunks (`k=3`).
+6. **Generate** — The 3 retrieved chunks are injected into a strict prompt (`Answer ONLY using the context below`) and passed to Llama 3, producing an accurate, grounded response with no hallucinations.
 
 ---
 
 ## 📥 Input & Output
 
 **Input**
-- `.pdf` textbooks placed in an `Input/` folder
-- Natural language questions typed into the terminal chat loop
+- **Knowledge Base:** `.pdf` textbooks placed in an `Input/` folder
+- **User Query:** Conceptual questions typed into a terminal chat loop (e.g., *Explain the binomial theorem*)
 
 **Output**
-- Accurate, grounded answers generated strictly from your provided textbooks — no guessing, no outside knowledge
+- A natural language response generated strictly from the content of your provided textbooks — no outside knowledge, no guessing.
 
 ---
 
 ## 🛠️ Prerequisites
 
-### 1. Python Packages
-
-> Python 3.11 is recommended for best compatibility.
+### 1. Install Python Packages
 
 ```bash
-pip install langchain langchain-community langchain-huggingface \
-            langchain-chroma langchain-ollama pypdf
+pip install langchain langchain-community langchain-huggingface langchain-chroma langchain-ollama pypdf
 ```
 
-### 2. Ollama & Llama 3
+> Python 3.11 is recommended for best stability.
+
+### 2. Install Ollama & Download the Model
 
 1. Download and install [Ollama](https://ollama.com/)
 2. Pull the Llama 3 model:
@@ -83,7 +60,7 @@ pip install langchain langchain-community langchain-huggingface \
 ollama pull llama3
 ```
 
-> ⚠️ Ollama must be running in the background before launching the script.
+> Ollama must be running in the background before you start the script.
 
 ---
 
@@ -91,7 +68,7 @@ ollama pull llama3
 
 ### Step 1 — Add your textbooks
 
-Create an `Input/` folder in the project directory and place your PDF files inside:
+Create a folder named `Input` in the project directory and place your `.pdf` files inside it.
 
 ```
 project/
@@ -109,11 +86,11 @@ project/
 python rag.py
 ```
 
-On **first run**, the system reads your PDFs and builds the Chroma vector database. **Subsequent runs** skip this step and load the existing database directly — much faster.
+On first run, the system will read your PDFs and build the Chroma vector database. Subsequent runs skip this step and load the existing database directly.
 
 ### Step 3 — Ask questions
 
-An interactive chat loop starts in your terminal once the database is ready:
+Once the database is ready, an interactive chat loop starts in your terminal:
 
 ```
 > Explain the binomial theorem
@@ -121,7 +98,7 @@ An interactive chat loop starts in your terminal once the database is ready:
 > What's Taylor's theorem? Can you explain with an example?
 ```
 
-The system retrieves the most relevant passages from your textbooks and generates a precise, sourced answer.
+The system will pull the most relevant passages from your textbooks and generate a precise answer.
 
 ---
 
@@ -130,8 +107,6 @@ The system retrieves the most relevant passages from your textbooks and generate
 ```
 project/
 ├── Input/          # Place your PDF textbooks here
-├── chroma_db/      # Auto-generated vector database (do not edit manually)
+├── chroma_db/      # Auto-generated vector database (do not edit)
 └── rag.py          # Main application script
 ```
-
----
