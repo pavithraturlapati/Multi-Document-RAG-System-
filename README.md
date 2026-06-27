@@ -2,8 +2,6 @@
 
 A Retrieval-Augmented Generation (RAG) system built with Python and LangChain. It reads a local folder of mathematical PDF textbooks — Statistical Probability, Permutations & Combinations, and Linear Algebra — and lets you ask interactive questions about the material using a fully local AI model.
 
----
-
 ## 🏗️ Core Architecture
 
 | Component | Technology |
@@ -14,8 +12,6 @@ A Retrieval-Augmented Generation (RAG) system built with Python and LangChain. I
 | Embedding Model | `all-MiniLM-L6-v2` (lightweight, open-source, CPU-friendly) |
 | Vector Database | Chroma (persisted locally) |
 | LLM | Llama 3 (via Ollama, runs fully offline) |
-
----
 
 ## ⚙️ How It Works
 
@@ -28,8 +24,6 @@ The system processes information in six logical steps:
 5. **Retrieve** — When you ask a question, the system searches the database and fetches the top 3 most semantically relevant text chunks (`k=3`).
 6. **Generate** — The 3 retrieved chunks are injected into a strict prompt (`Answer ONLY using the context below`) and passed to Llama 3, producing an accurate, grounded response with no hallucinations.
 
----
-
 ## 📥 Input & Output
 
 **Input**
@@ -38,8 +32,6 @@ The system processes information in six logical steps:
 
 **Output**
 - A natural language response generated strictly from the content of your provided textbooks — no outside knowledge, no guessing.
-
----
 
 ## 🛠️ Prerequisites
 
@@ -61,8 +53,6 @@ ollama pull llama3
 ```
 
 > Ollama must be running in the background before you start the script.
-
----
 
 ## 🚀 How to Use
 
@@ -99,8 +89,6 @@ Once the database is ready, an interactive chat loop starts in your terminal:
 ```
 
 The system will pull the most relevant passages from your textbooks and generate a precise answer.
-
----
 
 ## 📁 Project Structure
 
