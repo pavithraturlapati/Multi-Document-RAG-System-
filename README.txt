@@ -1,8 +1,6 @@
 # 📚 Multi-Document RAG System for Math Textbooks
 
-> Ask questions about your math textbooks in plain English — powered by a fully local, offline AI.
-
-A **Retrieval-Augmented Generation (RAG)** system built with Python and LangChain. Point it at a folder of mathematical PDF textbooks — *Statistical Probability*, *Permutations & Combinations*, *Linear Algebra* — and get precise, grounded answers without any cloud dependency or hallucinations.
+A Retrieval-Augmented Generation (RAG) system built with Python and LangChain. Point it at a folder of mathematical PDF textbooks — *Statistical Probability*, *Permutations & Combinations*, *Linear Algebra* — and get precise, grounded answers without any cloud dependency or hallucinations.
 
 ---
 
@@ -15,28 +13,30 @@ A **Retrieval-Augmented Generation (RAG)** system built with Python and LangChai
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Workflow
+
+The system processes information in six logical steps:
 
 ```
 PDF Textbooks (Input/)
         │
         ▼
-  [1] Load          PyPDFLoader reads all valid .pdf files
+  [1] Load        PyPDFLoader reads all valid .pdf files
         │
         ▼
-  [2] Chunk         RecursiveCharacterTextSplitter splits by paragraph → sentence
-        │            Sliding window preserves context across boundaries
+  [2] Chunk       RecursiveCharacterTextSplitter splits by paragraph → sentence
+        │         Sliding window preserves context across boundaries
         ▼
-  [3] Embed         all-MiniLM-L6-v2 converts each chunk to a semantic vector
+  [3] Embed       all-MiniLM-L6-v2 converts each chunk to a semantic vector
         │
         ▼
-  [4] Store         Chroma persists all vectors locally to ./chroma_db
+  [4] Store       Chroma persists all vectors locally to ./chroma_db
         │
         ▼
-  [5] Retrieve      Top 3 most semantically relevant chunks (k=3) fetched per query
+  [5] Retrieve    Top 3 most semantically relevant chunks (k=3) fetched per query
         │
         ▼
-  [6] Generate      Retrieved chunks injected into a strict prompt → Llama 3 responds
+  [6] Generate    Retrieved chunks injected into a strict prompt → Llama 3 responds
 ```
 
 ### Component Overview
@@ -87,7 +87,7 @@ ollama pull llama3
 
 ---
 
-## 🚀 Usage
+## 🚀 How to Use
 
 ### Step 1 — Add your textbooks
 
